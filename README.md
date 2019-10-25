@@ -4,8 +4,11 @@ Generate brand new (random) lyrics out of the tracks that you keep in your playl
 
 # installation
 
+[Manually](https://github.com/sahib/glyr/wiki/Compiling) compile and install `glyr`.
+Don't use your Linux distrubution packages manager to install `libglyr-dev` because it is probably
+outdated and does not include patches to properly parse lyrics providers.
+
 ```bash
-pip3 install cython
 pip3 install -r requirements.txt
 ```
 

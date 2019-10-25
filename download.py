@@ -9,7 +9,7 @@ def fetch_track_lyrics(artist, title):
         print("ERROR: {} - {} has no lyrics".format(artist, title))
         return None
     decoded = items[0].data.decode("utf-8")
-    if decoded == "Instrumental":
+    if decoded == "Instrumental" or decoded == "[ INSTRUMENTAL ]":
         print("{} - {} is instrumental".format(artist, title))
         return None
     return decoded
