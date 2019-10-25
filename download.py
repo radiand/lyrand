@@ -21,7 +21,11 @@ def fetch_track_lyrics_worker(artist, title, storage):
         storage.append((artist, title, lyrics))
 
 
-def sanitize(txt):
+def sanitize_artist(txt):
+    return txt.split(",")[0]
+
+
+def sanitize_title(txt):
     return txt.split("-")[0]
 
 
@@ -32,7 +36,9 @@ def download_lyrics(tracks):
     processes = []
 
     for artist, title in tracks:
-        p = multiprocessing.Process(target=fetch_track_lyrics_worker, args=(artist, title, lyrics))
+        p = multiprocessing.Process(
+            target=fetch_track_lyrics_worker,
+            args=(sanitize_artist(artist), sanitize_title(title), lyrics))
         processes.append(p)
         p.start()
 

@@ -20,6 +20,8 @@ def download(paths_in, path_out):
     tracks = flatten([csv2list(path) for path in paths_in])
     lyrics = download_lyrics(tracks)
 
+    print("downloaded lyrics for {} out of {} tracks".format(len(lyrics), len(tracks)))
+
     if path_out:
         with open(path_out, "w") as f:
             json.dump(list(lyrics), f)
