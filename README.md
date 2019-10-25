@@ -6,7 +6,7 @@ Generate brand new (random) lyrics out of the tracks that you keep in your playl
 
 ```bash
 pip3 install cython
-pip3 install -r requirements.txt`
+pip3 install -r requirements.txt
 ```
 
 # usage

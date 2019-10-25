@@ -1,10 +1,9 @@
 import argparse
 import csv
 import json
-import multiprocessing
-import plyr
 
 from generate import line_per_track
+from download import download_lyrics
 
 
 def csv2list(path):
@@ -14,47 +13,12 @@ def csv2list(path):
         return [(r[2], r[1]) for r in reader]
 
 
-def fetch_lyrics(artist, title):
-    query = plyr.Query(artist=artist, title=title, get_type="lyrics")
-    items = query.commit()
-    if not items:
-        print("ERROR: {} - {} has no lyrics".format(artist, title))
-        return None
-    decoded = items[0].data.decode("utf-8")
-    if decoded == "Instrumental":
-        print("{} - {} is instrumental".format(artist, title))
-        return None
-    return decoded
-
-
-def fetch_lyrics_worker(artist, title, storage):
-    lyrics = fetch_lyrics(artist, title)
-    if lyrics:
-        storage.append((artist, title, lyrics))
-
-
-def sanitize(txt):
-    return txt.split("-")[0]
-
-
 def download(paths_in, path_out):
     def flatten(l):
         return [item for sublist in l for item in sublist]
 
-    tracks = [csv2list(path) for path in paths_in]
-
-    manager = multiprocessing.Manager()
-    lyrics = manager.list()
-
-    processes = []
-
-    for artist, title in flatten(tracks):
-        p = multiprocessing.Process(target=fetch_lyrics_worker, args=(artist, title, lyrics))
-        processes.append(p)
-        p.start()
-
-    for p in processes:
-        p.join()
+    tracks = flatten([csv2list(path) for path in paths_in])
+    lyrics = download_lyrics(tracks)
 
     if path_out:
         with open(path_out, "w") as f:
