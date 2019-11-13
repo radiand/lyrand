@@ -2,18 +2,20 @@ import argparse
 import csv
 import json
 
+from typing import List, Tuple
+
 from generate import line_per_track, line_per_track_syllables
 from download import download_lyrics
 
 
-def csv2list(path):
+def csv2list(path: str) -> List[Tuple[str, str]]:
     with open(path) as f:
         reader = csv.reader(f)
         next(reader, None)  # drop header
         return [(r[2], r[1]) for r in reader]
 
 
-def download(paths_in, path_out):
+def download(paths_in: List[str], path_out: str) -> None:
     def flatten(l):
         return [item for sublist in l for item in sublist]
 
@@ -29,7 +31,7 @@ def download(paths_in, path_out):
         print(json.dumps(list(lyrics), indent=2))
 
 
-def generate(path_in, path_out, max_lines, syllables):
+def generate(path_in: str, path_out: str, max_lines: int, syllables: int) -> None:
     with open(path_in) as f:
         data = json.load(f)
         tracks = [t[2] for t in data]
@@ -53,7 +55,6 @@ def get_args():
 
     sp_generate = sp.add_parser("generate", help="generate lyrics", parents=[pp])
     sp_generate.add_argument("input", help="path to json dump with downloaded lyrics")
-    sp_generate.add_argument("-o", "--output", help="path to .txt file to dump the result")
     sp_generate.add_argument("--max-lines", help="max length of output record", type=int)
     sp_generate.add_argument("--syllables", help="exact number of syllables for each line", type=int)
 

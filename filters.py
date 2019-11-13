@@ -14,7 +14,7 @@ def shuffle(lines: List[str]) -> List[str]:
     return random.sample(lines, len(lines))
 
 
-def syllables(lines: List[str], num_syllables: int):
+def syllables(lines: List[str], num_syllables: int) -> List[str]:
     filtered = []
 
     for line in lines:

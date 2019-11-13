@@ -7,14 +7,14 @@ def newline2list(raw_str: str) -> List[str]:
     return list(filter(None, raw_str.split("\n")))
 
 
-def line_per_track(tracks, max_lines):
+def line_per_track(tracks: List[str], max_lines: int) -> List[str]:
     tracks = filters.shuffle(tracks)
     if max_lines:
         tracks = tracks[:max_lines]
     return [filters.pick_random_one(newline2list(track)) for track in tracks]
 
 
-def line_per_track_syllables(tracks, max_lines, syllables):
+def line_per_track_syllables(tracks: List[str], max_lines: int, syllables: int) -> List[str]:
     matching = []
     for track in tracks:
         matching_in_track = filters.syllables(newline2list(track), syllables)

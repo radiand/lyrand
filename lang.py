@@ -1,4 +1,4 @@
-def count_syllables(word: str):
+def count_syllables(word: str) -> int:
     """Shamelessly stolen from:
     https://stackoverflow.com/a/46759549"""
 
