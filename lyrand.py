@@ -2,7 +2,7 @@ import argparse
 import csv
 import json
 
-from generate import line_per_track
+from generate import line_per_track, line_per_track_syllables
 from download import download_lyrics
 
 
@@ -34,7 +34,8 @@ def generate(path_in, path_out, max_lines, syllables):
         data = json.load(f)
         tracks = [t[2] for t in data]
         if syllables:
-            print("not implemented")
+            for line in line_per_track_syllables(tracks, max_lines, syllables):
+                print(line)
         else:
             for line in line_per_track(tracks, max_lines):
                 print(line)
