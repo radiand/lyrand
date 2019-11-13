@@ -29,12 +29,15 @@ def download(paths_in, path_out):
         print(json.dumps(list(lyrics), indent=2))
 
 
-def generate(path_in, path_out, max_lines):
+def generate(path_in, path_out, max_lines, syllables):
     with open(path_in) as f:
         data = json.load(f)
         tracks = [t[2] for t in data]
-        for line in line_per_track(tracks, max_lines):
-            print(line)
+        if syllables:
+            print("not implemented")
+        else:
+            for line in line_per_track(tracks, max_lines):
+                print(line)
 
 
 def get_args():
@@ -51,6 +54,7 @@ def get_args():
     sp_generate.add_argument("input", help="path to json dump with downloaded lyrics")
     sp_generate.add_argument("-o", "--output", help="path to .txt file to dump the result")
     sp_generate.add_argument("--max-lines", help="max length of output record", type=int)
+    sp_generate.add_argument("--syllables", help="exact number of syllables for each line", type=int)
 
     return ap.parse_args()
 
@@ -60,7 +64,7 @@ def main():
     if args.subcommand == "download":
         download(args.input, args.output)
     elif args.subcommand == "generate":
-        generate(args.input, args.output, args.max_lines)
+        generate(args.input, args.output, args.max_lines, args.syllables)
 
 
 if __name__ == "__main__":
