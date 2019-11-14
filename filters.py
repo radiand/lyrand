@@ -21,3 +21,6 @@ def syllables(lines: List[str], num_syllables: int) -> List[str]:
             filtered.append(line)
     return filtered
 
+
+def rhymes(tracks: List[List[str]]):
+    pass

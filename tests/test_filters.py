@@ -1,4 +1,4 @@
-import unittest
+from unittest import TestCase
 
 import filters
 
@@ -12,7 +12,7 @@ PHRASES = {
 }
 
 
-class TestFilters(unittest.TestCase):
+class TestFilters(TestCase):
     def test_syllables(self):
         self.assertListEqual(PHRASES[5], filters.syllables(PHRASES[5], 5))
         self.assertListEqual(PHRASES[7], filters.syllables(PHRASES[7], 7))
