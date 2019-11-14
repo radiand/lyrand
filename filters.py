@@ -10,7 +10,7 @@ def pick_random_one(lines: List[str]) -> str:
     return lines[random.randint(0, len(lines) - 1)]
 
 
-def shuffle(lines: List[str]) -> List[str]:
+def shuffle(lines: List) -> List:
     return random.sample(lines, len(lines))
 
 
