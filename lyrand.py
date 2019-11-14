@@ -31,16 +31,20 @@ def download(paths_in: List[str], path_out: str) -> None:
         print(json.dumps(list(lyrics), indent=2))
 
 
-def generate(path_in: str, path_out: str, max_lines: int, syllables: int) -> None:
+def generate(path_in: str, max_lines: int, syllables: int) -> None:
     with open(path_in) as f:
         data = json.load(f)
         tracks = [t[2] for t in data]
+
         if syllables:
-            for line in line_per_track_syllables(tracks, max_lines, syllables):
-                print(line)
+            result = line_per_track_syllables(tracks, syllables)
         else:
-            for line in line_per_track(tracks, max_lines):
-                print(line)
+            result = line_per_track(tracks)
+
+        if max_lines:
+            result = result[:max_lines]
+        for line in result:
+            print(line)
 
 
 def get_args():
@@ -66,7 +70,7 @@ def main():
     if args.subcommand == "download":
         download(args.input, args.output)
     elif args.subcommand == "generate":
-        generate(args.input, args.output, args.max_lines, args.syllables)
+        generate(args.input, args.max_lines, args.syllables)
 
 
 if __name__ == "__main__":
