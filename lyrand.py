@@ -8,6 +8,10 @@ from generate import line_per_track, line_per_track_syllables
 from download import download_lyrics
 
 
+def newline2list(raw_str: str) -> List[str]:
+    return list(filter(None, raw_str.split("\n")))
+
+
 def csv2list(path: str) -> List[Tuple[str, str]]:
     with open(path) as f:
         reader = csv.reader(f)
@@ -34,7 +38,7 @@ def download(paths_in: List[str], path_out: str) -> None:
 def generate(path_in: str, max_lines: int, syllables: int) -> None:
     with open(path_in) as f:
         data = json.load(f)
-        tracks = [t[2] for t in data]
+        tracks = [newline2list(t[2]) for t in data]
 
         if syllables:
             result = line_per_track_syllables(tracks, syllables)
