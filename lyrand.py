@@ -4,7 +4,7 @@ import json
 
 from typing import List, Tuple
 
-from generate import line_per_track, line_per_track_syllables
+from generate import line_per_track, line_per_track_syllables, line_per_track_rhymes
 from download import download_lyrics
 
 
@@ -35,13 +35,18 @@ def download(paths_in: List[str], path_out: str) -> None:
         print(json.dumps(list(lyrics), indent=2))
 
 
-def generate(path_in: str, max_lines: int, syllables: int) -> None:
+def generate(path_in: str, max_lines: int, syllables: int, rhymes: bool) -> None:
     with open(path_in) as f:
         data = json.load(f)
         tracks = [newline2list(t[2]) for t in data]
 
         if syllables:
             result = line_per_track_syllables(tracks, syllables)
+        elif rhymes:
+            if max_lines and max_lines % 2 != 0:
+                print("odd max-lines!")
+                return
+            result = line_per_track_rhymes(tracks)
         else:
             result = line_per_track(tracks)
 
@@ -65,6 +70,7 @@ def get_args():
     sp_generate.add_argument("input", help="path to json dump with downloaded lyrics")
     sp_generate.add_argument("--max-lines", help="max length of output record", type=int)
     sp_generate.add_argument("--syllables", help="exact number of syllables for each line", type=int)
+    sp_generate.add_argument("--rhymes", help="rhymes!", action="store_true")
 
     return ap.parse_args()
 
@@ -74,7 +80,7 @@ def main():
     if args.subcommand == "download":
         download(args.input, args.output)
     elif args.subcommand == "generate":
-        generate(args.input, args.max_lines, args.syllables)
+        generate(args.input, args.max_lines, args.syllables, args.rhymes)
 
 
 if __name__ == "__main__":

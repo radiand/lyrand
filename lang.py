@@ -24,4 +24,7 @@ def count_syllables(word: str) -> int:
 
 def does_rhyme(lhs_line: str, rhs_line: str) -> bool:
     last_word = lambda line: re.findall(r"\w+", line)[-1]  # noqa: E731
-    return last_word(lhs_line) in pronouncing.rhymes(last_word(rhs_line))
+    try:
+        return last_word(lhs_line) in pronouncing.rhymes(last_word(rhs_line))
+    except IndexError:
+        return False

@@ -19,3 +19,13 @@ def line_per_track_syllables(tracks: List[List[str]], syllables: int) -> List[st
             matching.append(filters.pick_random_one(matching_in_track))
     matching = filters.shuffle(matching)
     return matching
+
+
+def line_per_track_rhymes(tracks: List[List[str]]) -> List[str]:
+    rhymes = filters.rhymes(tracks, mark_source=False)
+    result = []
+    for track in rhymes:
+        d = filters.pick_random_one_dict(track)
+        result.append(d[0])
+        result.append(filters.pick_random_one(d[1]))
+    return result
