@@ -1,6 +1,7 @@
 from unittest import TestCase, mock
 
 import filters
+from track import Credits, Track
 
 
 PHRASES = {
@@ -12,6 +13,10 @@ PHRASES = {
 }
 
 
+def make_track(lyrics):
+    return Track(Credits(artist="artist", title="title"), lyrics=lyrics)
+
+
 class TestFilters(TestCase):
     def test_syllables(self):
         self.assertListEqual(PHRASES[5], filters.syllables(PHRASES[5], 5))
@@ -21,7 +26,7 @@ class TestFilters(TestCase):
     @mock.patch("lang.does_rhyme")
     def test_rhymes_do_not_return_empty_lists(self, mock_does_rhyme):
         mock_does_rhyme.return_value = False
-        tracks = [
+        lyrics = [
             [
                 "track_1 line_1",
                 "track_1 line_2"
@@ -31,6 +36,7 @@ class TestFilters(TestCase):
                 "track_2 line_2"
             ],
         ]
+        tracks = [make_track(l) for l in lyrics]
 
         self.assertListEqual(filters.rhymes(tracks), [])
 
