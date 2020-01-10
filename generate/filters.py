@@ -4,7 +4,7 @@ import re
 from typing import Dict, List, Tuple
 
 from lang import count_syllables, does_rhyme
-from track import Track
+from track import Track, Verse
 
 
 def pick_random_one(lines: List[str]) -> str:
@@ -39,8 +39,9 @@ def rhymes(tracks: List[Track], limit=10):
         return l[:index] + l[index + 1:]
 
     matches = []
+    print("processing tracks in search for rhymes...")
     for t, track in enumerate(tracks):
-        print(f"processing track {t+1}/{len(tracks)}")
+        print(f"[{t+1}/{len(tracks)}] {track.credits.artist} - {track.credits.title}")
         matches_in_track = {}
         for l, line in enumerate(track.lyrics):
             line_matches = []
@@ -48,12 +49,12 @@ def rhymes(tracks: List[Track], limit=10):
                 rhyme_ctr = 0
                 for wline in wtrack.lyrics:
                     if does_rhyme(line, wline):
-                        line_matches.append(wline)
+                        line_matches.append(Verse(credits=wtrack.credits, value=wline))
                         rhyme_ctr += 1
                     if limit and rhyme_ctr >= limit:
                         break
             if line_matches:
-                matches_in_track[line] = line_matches
+                matches_in_track[Verse(credits=track.credits, value=line)] = line_matches
         if matches_in_track:
             matches.append(matches_in_track)
     return matches
