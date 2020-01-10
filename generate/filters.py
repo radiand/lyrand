@@ -1,17 +1,17 @@
 import random
 import re
 
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from lang import count_syllables, does_rhyme
 from track import Track, Verse
 
 
-def pick_random_one(lines: List[str]) -> str:
-    return lines[random.randint(0, len(lines) - 1)]
+def pick_random_one(container: List[Any]) -> Any:
+    return random.choice(container)
 
 
-def pick_random_one_dict(d: Dict[str, List[str]]) -> Tuple[str, List[str]]:
+def pick_random_key_and_value(d: Dict[Any, List[Any]]) -> Tuple[Any, List[Any]]:
     key = random.choice(list(d.keys()))
     return key, d[key]
 
@@ -28,7 +28,7 @@ def syllables(lines: List[str], num_syllables: int) -> List[str]:
     return filtered
 
 
-def rhymes(tracks: List[Track], limit=10):
+def rhymes(tracks: List[Track], limit=10) -> List[Dict[Verse, List[Verse]]]:
     """ Given
         `tracks`, which is a list of lists of lines in track
        returns

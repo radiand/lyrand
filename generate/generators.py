@@ -30,7 +30,7 @@ def line_per_track_rhymes(tracks: List[Track]) -> List[Verse]:
     rhymes = filters.rhymes(tracks)
     result = []
     for track in rhymes:
-        d = filters.pick_random_one_dict(track)
+        d = filters.pick_random_key_and_value(track)
         result.append(d[0])
         result.append(filters.pick_random_one(d[1]))
     return result
