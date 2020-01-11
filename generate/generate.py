@@ -13,7 +13,10 @@ def newline2list(raw_str: str) -> List[str]:
 
 
 def get_args():
-    ap = argparse.ArgumentParser(description="generate random lyrics out of given titles")
+    ap = argparse.ArgumentParser(
+        description="generate random lyrics out of given titles",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
     ap.add_argument("input", help="path to json dump with downloaded lyrics")
     ap.add_argument("--max-lines", help="max length of output record", type=int)
