@@ -2,9 +2,9 @@ import random
 import re
 from typing import Any, Dict, List, Tuple
 
-from cache import Cache
-from lang import count_syllables, does_rhyme
-from track import Track, Verse
+from .cache import Cache
+from .lang import count_syllables, does_rhyme
+from .track import Track, Verse
 
 
 def pick_random_one(container: List[Any]) -> Any:

@@ -2,7 +2,7 @@ ut:
 	python3 -m unittest --verbose
 
 types:
-	mypy *.py
+	mypy lyrand
 
 lint:
 	flake8 *.py

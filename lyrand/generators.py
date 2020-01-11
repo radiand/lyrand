@@ -1,7 +1,7 @@
 from typing import List
 
-import filters
-from track import Track, Verse
+from . import filters
+from .track import Track, Verse
 
 
 def line_per_track(tracks: List[Track]) -> List[Verse]:

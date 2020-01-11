@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-import lang
+from lyrand import lang
 
 
 class TestLang(TestCase):
