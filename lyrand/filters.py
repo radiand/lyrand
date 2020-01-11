@@ -44,7 +44,7 @@ def rhymes(tracks: List[Track], limit=10) -> List[Dict[Verse, List[Verse]]]:
     for t, track in enumerate(tracks):
         print(f"[{t+1}/{len(tracks)}] {track.credits.artist} - {track.credits.title}")
         matches_in_track = {}
-        for l, line in enumerate(track.lyrics):
+        for line in track.lyrics:
             line_matches = []
             for wtrack in without(t, tracks):
                 rhyme_ctr = 0

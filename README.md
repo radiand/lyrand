@@ -45,6 +45,5 @@ pip3 install .
 
 ```bash
 pip3 install -e .
-pip3 install -r requirements.txt
-make test
+tox -e py37  # or any other tox.ini command...
 ```

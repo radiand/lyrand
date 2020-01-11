@@ -1,10 +1,9 @@
 import argparse
 import json
-
 from typing import List
 
 from .cache import Cache
-from .generators import line_per_track, line_per_track_syllables, line_per_track_rhymes
+from .generators import line_per_track, line_per_track_rhymes, line_per_track_syllables
 from .track import Credits, Track, Verse
 
 
