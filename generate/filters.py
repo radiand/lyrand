@@ -1,8 +1,8 @@
 import random
 import re
-
 from typing import Any, Dict, List, Tuple
 
+from cache import Cache
 from lang import count_syllables, does_rhyme
 from track import Track, Verse
 
@@ -28,6 +28,7 @@ def syllables(lines: List[str], num_syllables: int) -> List[str]:
     return filtered
 
 
+@Cache.by_function_name
 def rhymes(tracks: List[Track], limit=10) -> List[Dict[Verse, List[Verse]]]:
     """ Given
         `tracks`, which is a list of lists of lines in track

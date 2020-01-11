@@ -5,6 +5,7 @@ from typing import List
 
 from generators import line_per_track, line_per_track_syllables, line_per_track_rhymes
 from track import Credits, Track, Verse
+from cache import Cache
 
 
 def newline2list(raw_str: str) -> List[str]:
@@ -19,7 +20,20 @@ def get_args():
     ap.add_argument("--rhymes", help="rhymes!", action="store_true")
     ap.add_argument("--syllables", help="exact number of syllables for each line", type=int)
     ap.add_argument(
-        "--print-origin", help="print also artist and title of a verse", action="store_true")
+        "--print-origin",
+        help="print also artist and title of a verse",
+        action="store_true")
+    ap.add_argument(
+        "-c",
+        "--cache",
+        help="enable cache between script runs; see also '--cache-path'",
+        action="store_true",
+        default=False)
+    ap.add_argument(
+        "--cache-path",
+        help="where cached function calls should be stored",
+        type=str,
+        default=".cache")
 
     return ap.parse_args()
 
@@ -37,6 +51,12 @@ def print_verses(verses: List[Verse], origin: bool):
         print(f"{value} {verse.credits.artist} - {verse.credits.title}")
 
 
+def load_tracks(path: str) -> List[Track]:
+    with open(path) as f:
+        data = json.load(f)
+        return [Track(Credits(artist=t[0], title=t[1]), newline2list(t[2])) for t in data]
+
+
 def main():
     args = get_args()
 
@@ -45,24 +65,25 @@ def main():
     rhymes = args.rhymes
     syllables = args.syllables
 
-    with open(path_in) as f:
-        data = json.load(f)
-        tracks = [Track(Credits(artist=t[0], title=t[1]), newline2list(t[2])) for t in data]
+    if args.cache:
+        Cache.setup(args.cache_path, path_in)
 
-        if syllables:
-            result = line_per_track_syllables(tracks, syllables)
-        elif rhymes:
-            if max_lines and max_lines % 2 != 0:
-                print("odd max-lines!")
-                return
-            result = line_per_track_rhymes(tracks)
-        else:
-            result = line_per_track(tracks)
+    tracks = load_tracks(path_in)
 
-        if args.max_lines:
-            result = result[:max_lines]
+    if syllables:
+        result = line_per_track_syllables(tracks, syllables)
+    elif rhymes:
+        if max_lines and max_lines % 2 != 0:
+            print("odd max-lines!")
+            return
+        result = line_per_track_rhymes(tracks)
+    else:
+        result = line_per_track(tracks)
 
-        print_verses(result, args.print_origin)
+    if args.max_lines:
+        result = result[:max_lines]
+
+    print_verses(result, args.print_origin)
 
 
 if __name__ == "__main__":
