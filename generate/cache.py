@@ -18,13 +18,7 @@ class Cache:
     disk and loads them next time.
     """
 
-    # Stores information whether cache was enabled via CLI.
     enabled = False
-
-    # Stores information whether input file is the same as it was on last script run.
-    # input file is e.g. JSON file with lyrics passed via CLI.
-    possible = False
-
     cache_path = "/tmp"
 
     @classmethod
@@ -38,14 +32,13 @@ class Cache:
                 class calculates MD5 checksum on this file and compare it with already stored one.
 
         """
-        cls.enabled = True
         cls.cache_path = cache_path
 
         new_checksum = md5sum(input_path)
         old_checksum = cls._load_input_checksum(os.path.join(cache_path, "last.md5"))
 
         if new_checksum == old_checksum:
-            cls.possible = True
+            cls.enabled = True
         else:
             os.makedirs(cache_path, exist_ok=True)
             with open(cls._md5path(), "w") as f:
@@ -60,7 +53,7 @@ class Cache:
         @wraps(fn)
         def wrapper(*args, **kwargs):
             fn_name = fn.__name__
-            if cls.enabled and cls.possible and os.path.isfile(cls._picklepath(fn_name)):
+            if cls.enabled and os.path.isfile(cls._picklepath(fn_name)):
                 obj = None
                 with open(cls._picklepath(fn_name), "rb") as input_picklefile:
                     obj = pickle.load(input_picklefile)

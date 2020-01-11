@@ -3,9 +3,9 @@ import json
 
 from typing import List
 
+from cache import Cache
 from generators import line_per_track, line_per_track_syllables, line_per_track_rhymes
 from track import Credits, Track, Verse
-from cache import Cache
 
 
 def newline2list(raw_str: str) -> List[str]:
